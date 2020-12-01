@@ -6,7 +6,7 @@ const router = new express.Router();
 
 router.get('/hoteles', async (req, res) => {
     try {
-        const hoteles = await Hotel.find({});
+        const hoteles = await Hotel.find({}).populate('ciudad');
         res.send(hoteles);
     } catch(e) {
         res.status(500).send(e);
@@ -17,7 +17,7 @@ router.get('/hoteles/:id', async (req, res) => {
     try {
         const id = req.params.id;
 
-        const hotel = await Hotel.findById(id);
+        const hotel = await Hotel.findById(id).populate('ciudad');
         if (!hotel) {
             res.status(404).send();
         } else {
