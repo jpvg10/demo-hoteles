@@ -1,5 +1,6 @@
 const express = require('express');
 const Hotel = require('../db/models/hotel');
+const Ciudad = require('../db/models/ciudad');
 
 const router = new express.Router();
 
@@ -70,6 +71,18 @@ router.delete('/hoteles/:id', async (req, res) => {
         }
     } catch(e) {
         res.status(500).send(e);
+    }
+});
+
+router.post('/ciudades', async (req, res) => {
+    try {
+        const dataCiudad = req.body;
+        const ciudad = new Ciudad(dataCiudad);
+
+        await ciudad.save();
+        res.status(201).send(ciudad);
+    } catch(e) {
+        res.status(400).send(e);
     }
 });
 

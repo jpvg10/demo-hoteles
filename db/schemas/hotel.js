@@ -13,9 +13,9 @@ const hotelSchema = new mongoose.Schema({
         max: 5
     },
     ciudad: {
-        type: String,
-        required: true,
-        trim: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Ciudad',
+        required: true
     }
 });
 
