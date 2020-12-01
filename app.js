@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 const express = require('express');
 const viewsRoutes = require('./routes/views');
@@ -13,7 +15,7 @@ app.set('view engine','ejs');
 app.use('/api', apiRoutes);
 app.use(viewsRoutes);
 
-mongoose.connect('mongodb://localhost:27017/dbHoteles', {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
@@ -25,6 +27,6 @@ mongoose.connect('mongodb://localhost:27017/dbHoteles', {
     console.log(error);
 });
 
-app.listen(3000, () => {
-    console.log('Listening on port 3000');
+app.listen(process.env.PORT, () => {
+    console.log(`Listening on port ${process.env.PORT}`);
 });
