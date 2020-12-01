@@ -1,0 +1,81 @@
+const express = require('express');
+const Hotel = require('../db/models/hotel');
+
+const router = new express.Router();
+
+router.get('/hoteles', async (req, res) => {
+    try {
+        const hoteles = await Hotel.find({});
+        res.send(hoteles);
+    } catch(e) {
+        res.status(500).send(e);
+    }
+});
+
+router.get('/hoteles/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const hotel = await Hotel.findById(id);
+        if (!hotel) {
+            res.status(404).send();
+        } else {
+            res.send(hotel);
+        }
+    } catch(e) {
+        res.status(500).send(e);
+    }
+});
+
+router.post('/hoteles', async (req, res) => {
+    try {
+        const dataHotel = req.body;
+        const hotel = new Hotel(dataHotel);
+
+        await hotel.save();
+        res.status(201).send(hotel);
+    } catch(e) {
+        res.status(400).send(e);
+    }
+});
+
+router.patch('/hoteles/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const hotel = await Hotel.findByIdAndUpdate(
+            id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+        if (!hotel) {
+            res.status(404).send();
+        } else {
+            res.send(hotel);
+        }
+    } catch(e) {
+        res.status(500).send(e);
+    }
+});
+
+router.delete('/hoteles/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const hotel = await Hotel.findByIdAndDelete(id);
+        if (!hotel){
+            res.status(404).send();
+        } else {
+            res.send();
+        }
+    } catch(e) {
+        res.status(500).send(e);
+    }
+});
+
+// Ruta por defecto
+router.use((req, res) => {
+    res.sendStatus(404);
+});
+
+module.exports = router;
